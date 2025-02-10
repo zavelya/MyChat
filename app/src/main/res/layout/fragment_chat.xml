@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools">
 
 
     <data>
@@ -47,7 +47,8 @@
                 android:src="@drawable/person"
                 app:civ_border_width="2dp"
                 app:civ_border_color="#FE2C54"
-                android:id="@+id/chatImageViewUser"/>
+                android:id="@+id/chatImageViewUser"
+                tools:ignore="MissingClass" />
 
 
             <TextView
