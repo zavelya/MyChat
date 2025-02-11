@@ -1,3 +1,5 @@
+import com.android.tools.r8.internal.de
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -7,14 +9,14 @@ plugins {
 
 android {
     namespace = "com.example.mychat"
-    compileSdk = 34
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "com.example.mychat"
-        minSdk = 24
-        targetSdk = 34
+        minSdk = 21
+        targetSdk = 33
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.8"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -33,7 +35,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "1.8"
     }
     buildFeatures {
         compose = true
@@ -62,5 +64,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation (libs.hdodenhof:circleimageview:3.1.0)
+
+
+
+
 }
