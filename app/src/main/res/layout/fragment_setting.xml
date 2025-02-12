@@ -9,8 +9,6 @@
             name="viewModel"
             type="com.example.mychat.mvvm.ChatAppViewmodel" />
 
-
-
     </data>
 
     <ScrollView

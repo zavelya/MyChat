@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "com.example.mychat"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.mychat"
@@ -28,9 +28,8 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-        }
-    }
-    compileOptions {
+
+   compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
@@ -39,7 +38,8 @@ android {
     }
     buildFeatures {
         compose = true
-    }
+viewBinding=true
+dataBinding=true
 }
 
 dependencies {
@@ -57,6 +57,9 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.androidx.databinding.runtime)
+    implementation(libs.androidx.library)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -68,4 +71,4 @@ dependencies {
 
 
 
-}
+}}}}
