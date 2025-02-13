@@ -9,11 +9,11 @@ plugins {
 
 android {
     namespace = "com.example.mychat"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.mychat"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 33
         versionCode = 1
         versionName = "1.8"
@@ -38,8 +38,8 @@ android {
     }
     buildFeatures {
         compose = true
-viewBinding=true
-dataBinding=true
+        viewBinding=true
+        dataBinding=true
 }
 
 dependencies {
@@ -59,7 +59,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.firebase.auth.ktx)
     implementation(libs.androidx.databinding.runtime)
-    implementation(libs.androidx.library)
+    // implementation(libs.androidx.library)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -67,6 +67,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
 
 
 
