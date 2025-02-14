@@ -7,10 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.mychat.R
 import com.example.mychat.databinding.FragmentSettingBinding
-import com.example.mychat.mvvm.ChatAppViewmodel
+import com.example.mychat.mvvm.ChatAppViewModel
 
 class  SettingFragment : Fragment() {
-    lateinit var viewModel: ChatAppViewmodel
+    lateinit var viewModel: ChatAppViewModel
     lateinit var binding : FragmentSettingBinding
 
       override fun onCreateView(

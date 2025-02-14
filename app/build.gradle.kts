@@ -33,9 +33,12 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+            tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>{
+       kotlinOptions {
+           jvmTarget = "11"
+           freeCompilerArgs = listOf("-Xjvm-default=all")
+       }
+   }
     buildFeatures {
         compose = true
         viewBinding=true
@@ -68,6 +71,10 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation ("de.hdodenhof:circleimageview:3.1.0")
+    implementation ("androidx.appcompat:appcompat:1.3.0")
+    implementation ("com.google.firebase:firebase-auth:22.1.1")
+    implementation(platform("com.google.firebase:firebase-bom:33.8.0"))
+    implementation("com.google.firebase:firebase-firestore")
 
 
 
