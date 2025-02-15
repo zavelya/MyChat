@@ -64,6 +64,7 @@
                     android:maxLength="25"
                     android:paddingStart="10dp"
                     android:paddingEnd="0dp"
+                    android:minHeight="48dp"
                     tools:background="@android:color/transparent" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -89,7 +90,8 @@
                     android:maxLength="25"
                     android:paddingStart="10dp"
                     android:paddingEnd="0dp"
-                    tools:background="@android:color/transparent" />
+                    tools:background="@android:color/transparent"
+                    tools:ignore="TouchTargetSizeCheck" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
