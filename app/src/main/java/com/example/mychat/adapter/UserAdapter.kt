@@ -1,7 +1,6 @@
 package com.example.mychat.adapter
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +13,8 @@ import de.hdodenhof.circleimageview.CircleImageView
 import com.bumptech.glide.Glide
 
 class UserAdapter : RecyclerView.Adapter<UserHolder>() {
-
-    private var listOfUsers: List<Users> = listOf()
+    // Değiştirilen liste tipini MutableList<Users> olarak tanımlıyoruz
+    private var listOfUsers = mutableListOf<Users>()
     private var listener: OnUserClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserHolder {
@@ -30,7 +29,8 @@ class UserAdapter : RecyclerView.Adapter<UserHolder>() {
     override fun onBindViewHolder(holder: UserHolder, position: Int) {
         val users = listOfUsers[position]
 
-        val name = users.username?.split("\\s".toRegex())?.get(0) ?: "Bilinmiyor"
+        val name = users.username!!.split("\\s".toRegex())[0]
+
         holder.profileName.text = name
 
         if (users.status == "Online") {
@@ -41,25 +41,22 @@ class UserAdapter : RecyclerView.Adapter<UserHolder>() {
 
         Glide.with(holder.itemView.context).load(users.imageUrl).into(holder.imageProfile)
 
-        holder.itemView.setOnClickListener{
+        holder.itemView.setOnClickListener {
             listener?.onUserSelected(position, users)
         }
-
-
-
-
-    }
-    fun setOnUserClickListener(listener: OnUserClickListener){
-        this.listener=listener
     }
 
     @SuppressLint("NotifyDataSetChanged")
     fun setUserList(list: List<Users>) {
-        this.listOfUsers = list
+        // Mutable liste olduğunda set edebiliyoruz
+        listOfUsers.clear() // Önceki verileri temizle
+        listOfUsers.addAll(list) // Yeni verileri ekle
         notifyDataSetChanged()
     }
 
-
+    fun setOnUserClickListener(listener: OnUserClickListener) {
+        this.listener = listener
+    }
 }
 
 class UserHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

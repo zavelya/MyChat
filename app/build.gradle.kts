@@ -4,9 +4,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("com.google.gms.google-services")
-
-
+    alias(libs.plugins.google.services)
+    id ("androidx.navigation.safeargs")
 }
 
 android {
@@ -19,7 +18,6 @@ android {
         targetSdk = 33
         versionCode = 1
         versionName = "1.8"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -36,11 +34,11 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
             tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>{
-       kotlinOptions {
-           jvmTarget = "11"
-           freeCompilerArgs = listOf("-Xjvm-default=all")
-       }
-   }
+                kotlinOptions {
+                    jvmTarget = "11"
+                    freeCompilerArgs = listOf("-Xjvm-default=all")
+                    }
+            }
     buildFeatures {
         compose = true
         viewBinding=true
@@ -71,7 +69,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation ("com.google.android.material:material:1.11.0")
+    implementation (libs.material.v1110)
     implementation ("de.hdodenhof:circleimageview:3.1.0")
     implementation ("androidx.appcompat:appcompat:1.3.0")
     implementation ("com.google.firebase:firebase-auth:23.2.0")
@@ -79,6 +77,10 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
+    implementation ("androidx.navigation:navigation-fragment-ktx:2.7.6")
+    implementation ("androidx.navigation:navigation-ui-ktx:2.7.6")
+    implementation ("androidx.fragment:fragment-ktx:1.6.0")
+
 
 
 

@@ -2,8 +2,9 @@ package com.example.mychat.modal
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.versionedparcelable.VersionedParcelize
 import com.google.rpc.Status
-
+@VersionedParcelize
 data class Users (
      val userid : String? ="",
      val status: String?="",

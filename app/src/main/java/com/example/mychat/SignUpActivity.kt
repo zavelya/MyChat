@@ -98,7 +98,7 @@ class SignUpActivity : AppCompatActivity() {
                 "username" to name,
                 "useremail" to email,
                 "status" to  "default",
-                "imagUrl" to "https://www.pngarts.com/files/6/User-Avatar-in-Suit-PNG.png")
+                "imageUrl" to "https://www.pngarts.com/files/6/User-Avatar-in-Suit-PNG.png")
 
 
             firestore.collection("Users").document(user.uid).set(HashMap)
