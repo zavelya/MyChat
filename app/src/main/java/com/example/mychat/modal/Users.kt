@@ -2,16 +2,17 @@ package com.example.mychat.modal
 
 import android.os.Parcel
 import android.os.Parcelable
-import androidx.versionedparcelable.VersionedParcelize
-import com.google.rpc.Status
-@VersionedParcelize
+
 data class Users (
-     val userid : String? ="",
-     val status: String?="",
-    val imageUrl: String?="",
-    val username : String?="",
-    val useremail : String?="",
- ) : Parcelable {
+
+    val userid:String?="",
+    val status:String?="",
+    val imageUrl:String?="",
+    val username:String?="",
+    var useremail:String?="",
+
+
+    ):Parcelable{
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString(),
@@ -42,4 +43,6 @@ data class Users (
             return arrayOfNulls(size)
         }
     }
+
+
 }

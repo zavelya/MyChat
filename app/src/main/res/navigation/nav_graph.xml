@@ -4,59 +4,63 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/homeFragment">
 
+    <!-- Home Fragment -->
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.mychat.fragments.HomeFragment"
-        android:label="HomeFragment" >
+        android:label="HomeFragment">
+
         <action
             android:id="@+id/action_homeFragment_to_settingFragment"
             app:destination="@id/settingFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
+            app:popExitAnim="@anim/slide_out_right" />
+
         <action
             android:id="@+id/action_homeFragment_to_chatFragment"
             app:destination="@id/chatFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
+
+    <!-- Chat Fragment -->
     <fragment
         android:id="@+id/chatFragment"
         android:name="com.example.mychat.fragments.ChatFragment"
-        android:label="ChatFragment" >
+        android:label="ChatFragment">
+
+        <argument
+            android:name="users"
+            app:argType="com.example.mychat.modal.Users"
+            app:nullable="false"
+            />
+
         <action
             android:id="@+id/action_chatFragment_to_homeFragment"
             app:destination="@id/homeFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
+
+    <!-- Setting Fragment -->
     <fragment
         android:id="@+id/settingFragment"
         android:name="com.example.mychat.fragments.SettingFragment"
-        android:label="SettingFragment" >
+        android:label="SettingFragment">
+
         <action
             android:id="@+id/action_settingFragment_to_homeFragment"
             app:destination="@id/homeFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
-    <fragment
-        android:id="@+id/chatFromHomeFragment"
-        android:name="com.example.mychat.fragments.HomeFragment"
-        android:label="ChatFromHomeFragment" >
-        <action
-            android:id="@+id/action_chatFromHomeFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
-    </fragment>
+
 </navigation>

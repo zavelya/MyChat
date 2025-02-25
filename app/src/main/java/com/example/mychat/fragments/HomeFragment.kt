@@ -86,9 +86,9 @@ class HomeFragment : Fragment(), OnUserClickListener {
     }
 
     override fun onUserSelected(position: Int, users: Users) {
-       val action = HomeFragmentDirections.actionHomeFragmentToChatFragment(users)
+        val action = HomeFragmentDirections.actionHomeFragmentToChatFragment(users)
         view?.findNavController()?.navigate(action)
-        Toast.makeText(requireContext(), "ClickedOn${users.username}", Toast.LENGTH_SHORT).show()
+        Log.e("HOMEFRAGMENT", "ClickedOn${users.username}")
 
 
     }
