@@ -30,7 +30,8 @@ class Utils {
         fun getTime(): String{
             val formatter = SimpleDateFormat("HH:mm:ss")
             val date : Date = Date(System.currentTimeMillis())
-            val string
+            val stringdate = formatter.format(date)
+            return stringdate
         }
     }
 

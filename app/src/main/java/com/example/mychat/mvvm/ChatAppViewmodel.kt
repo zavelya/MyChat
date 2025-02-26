@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide.init
 import com.example.mychat.MyApplication
 import com.example.mychat.SharedPrefs
 import com.example.mychat.Utils
+import com.example.mychat.modal.Messages
 import com.example.mychat.modal.Users
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
@@ -19,6 +20,7 @@ class ChatAppViewModel : ViewModel() {
     val imageUrl= MutableLiveData<String>()
     val message = MutableLiveData<String>()
     val usersRepo = UsersRepo()
+    val messagesRepo = MessageRepo()
 
     init{
         getCurrentUser()
@@ -60,31 +62,44 @@ fun getCurrentUser() = viewModelScope.launch(Dispatchers.IO) {
         }
 }
 
-}
-/*fun getCurrentUser() = viewModelScope.launch(Dispatchers.IO) {
+//SEND MESSAGE
+    fun sendMessage(sender: String , receiver : String , friendname: String , friendimage:String)=viewModelScope.launch(Dispatchers.IO) {
     val context = MyApplication.instance.applicationContext
-    val userId = Utils.getUiLoggedIn()
+    val hashMap= hashMapOf<String, Any>(
+        "sender" to sender, "receiver" to receiver , "message" to message.value!!, "time" to Utils.getTime()
+    )
 
-    if (userId.isNullOrEmpty()) {
-        // Eğer kullanıcı ID null veya boşsa işlemi iptal et
-        return@launch
-    }
+    val uniqueId= listOf(sender,receiver).sorted()
+    uniqueId.joinToString (separator="")
+    val friendnamesplit= friendname.split("\\s".toRegex())[0]
 
-    firestore.collection("Users").document(userId)
-        .addSnapshotListener { value, error ->
-            if (error != null) {
-                // Firestore'dan veri çekerken hata olduysa logla
-                return@addSnapshotListener
+    val mysharedPrefs= SharedPrefs(context)
+    mysharedPrefs.setValue("friendid", receiver)
+    mysharedPrefs.setValue("chatroomid", uniqueId.toString())
+    mysharedPrefs.setValue("friendid", friendnamesplit)
+    mysharedPrefs.setValue("friendimage", friendimage)
+    //sending message
+    firestore.collection("Messages").document(uniqueId.toString())
+        .collection("chats").document(Utils.getTime()).set(hashMap).addOnCompleteListener{ task->
+        val hashMapForRecent = hashMapOf<String, Any>(
+            "friendid" to receiver ,
+            "time" to Utils.getTime(), "sender" to Utils.getUiLoggedIn(), "message" to message.value!!,
+            "friendsimage" to friendimage  , "name" to friendname, "person" to "you"        )
+
+            firestore.collection("Conversation${Utils.getUiLoggedIn()}").document(receiver).set(hashMapForRecent)
+
+            firestore.collection("Conversation${receiver}").document(Utils.getUiLoggedIn()).update("message", message.value!!, "time", Utils.getTime(), "person", name.value!!)
+
+            if(task.isSuccessful){
+                message.value=""
             }
 
-            if (value != null && value.exists()) {
-                val users = value.toObject(Users::class.java)
 
-                // null kontrolü ekleyerek LiveData güncelle
-                name.postValue(users?.username ?: "")
-                imageUrl.postValue(users?.imageUrl ?: "")
 
-                val mysharedPrefs = SharedPrefs(context)
-                mysharedPrefs.setValue("username", users?.username ?: "")
-            }
-        }}}*/
+        }
+}
+ fun getMessages(friendid: String) : LiveData<List<Messages>>{
+     return messagesRepo.getMessages(friendid)
+ }
+}
+

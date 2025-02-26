@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.mychat.R
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.Observer
 import com.example.mychat.Utils
 import com.example.mychat.databinding.FragmentChatBinding
 import com.example.mychat.mvvm.ChatAppViewModel
@@ -73,6 +74,10 @@ class ChatFragment : Fragment() {
             chatAppViewModel.sendMessage(Utils.getUiLoggedIn(), args.users.userid!!, args.users.username!!, args.users.imageUrl!!)
 
         }
+        chatAppViewModel.getMessages(args.users.userid!!).observe(viewLifecycleOwner, Observer{
+
+
+        })
 
 
     }
