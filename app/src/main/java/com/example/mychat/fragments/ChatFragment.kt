@@ -15,8 +15,12 @@ import androidx.navigation.findNavController
 import com.example.mychat.R
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.example.mychat.Utils
+import com.example.mychat.adapter.MessageAdapter
 import com.example.mychat.databinding.FragmentChatBinding
+import com.example.mychat.modal.Messages
 import com.example.mychat.mvvm.ChatAppViewModel
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -31,6 +35,7 @@ class ChatFragment : Fragment() {
     private lateinit var tvUserName: TextView
     private lateinit var tvStatus: TextView
     private lateinit var backbtn: ImageView
+    private lateinit var messageAdapter :MessageAdapter
 
 
     override fun onCreateView(
@@ -76,10 +81,23 @@ class ChatFragment : Fragment() {
         }
         chatAppViewModel.getMessages(args.users.userid!!).observe(viewLifecycleOwner, Observer{
 
+            initRecyclerView(it)
 
         })
 
 
+    }
+
+    private fun initRecyclerView(it: List<Messages>?) {
+        messageAdapter=MessageAdapter()
+        val layoutManager = LinearLayoutManager(context)
+        chatbinding.messagesRecyclerView.layoutManager = layoutManager
+        layoutManager.stackFromEnd=true
+        if (it != null) {
+            messageAdapter.setMessageList(it)
+        }
+        messageAdapter.notifyDataSetChanged()
+        chatbinding.messagesRecyclerView.adapter=messageAdapter
     }
 
 }

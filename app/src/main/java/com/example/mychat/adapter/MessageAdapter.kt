@@ -6,10 +6,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mychat.R
+import com.example.mychat.Utils
 import com.example.mychat.modal.Messages
 
 class MessageAdapter: RecyclerView.Adapter<MessageHolder>() {
-    private var listOfMessage= listOf<Messages>()
+    private var listOfMessage= listOf<Messages>() as List<Messages>
     private val LEFT = 0
     private val RIGHT = 1
 
@@ -29,15 +30,20 @@ class MessageAdapter: RecyclerView.Adapter<MessageHolder>() {
     }
 
     override fun onBindViewHolder(holder: MessageHolder, position: Int) {
-        val message = listOfMessage[position]
+        val message = listOfMessage[position] as Messages
         holder.messageText.visibility=View.VISIBLE
         holder.messageText.visibility=View.VISIBLE
-        //holder.messageText.text = message
-        //holder.timeOfSent.text = message.time?.substring(0,5)?:""
-
+        holder.messageText.setText(message.message)
+        holder.timeOfSent.text= message.time?.substring(0,5)?:""
 
     }
 
+    override fun getItemViewType(position: Int) =
+        if(listOfMessage[position].sender== Utils.getUiLoggedIn()) RIGHT else LEFT
+
+        fun setMessageList(newList: List<Messages>){
+            this.listOfMessage=newList
+        }
 }
 
 class MessageHolder(itemView:View) : RecyclerView.ViewHolder(itemView){

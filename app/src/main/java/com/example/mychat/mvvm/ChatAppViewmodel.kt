@@ -1,5 +1,7 @@
 package com.example.mychat.mvvm
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,6 +13,7 @@ import com.example.mychat.Utils
 import com.example.mychat.modal.Messages
 import com.example.mychat.modal.Users
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 private val firestore= FirebaseFirestore.getInstance()
@@ -61,9 +64,59 @@ fun getCurrentUser() = viewModelScope.launch(Dispatchers.IO) {
             }
         }
 }
+    @SuppressLint("SuspiciousIndentation")
+    fun sendMessage(sender: String, receiver: String?, friendname: String, friendimage: String) = viewModelScope.launch(Dispatchers.IO) {
+        val context = MyApplication.instance.applicationContext
+
+        if (receiver.isNullOrEmpty()) {
+            Log.e("ChatAppViewModel", "Receiver ID is null!")
+            return@launch
+        }
+
+        val messageText = message.value ?: return@launch
+        val senderName = name.value ?: "Unknown"
+
+        val hashMap = hashMapOf<String, Any>(
+            "sender" to sender,
+            "receiver" to receiver,
+            "message" to messageText,
+            "time" to Utils.getTime()
+        )
+
+        val uniqueId = listOf(sender, receiver).sorted().joinToString("")
+
+        firestore.collection("Messages").document(uniqueId)
+            .collection("chats").document(Utils.getTime()).set(hashMap)
+            .addOnCompleteListener { task ->
+                val hashMapForRecent = hashMapOf<String, Any>(
+                    "friendid" to receiver,
+                    "time" to Utils.getTime(),
+                    "sender" to Utils.getUiLoggedIn(),
+                    "message" to messageText,
+                    "friendsimage" to friendimage,
+                    "name" to friendname,
+                    "person" to "you"
+                )
+
+                firestore.collection("Conversation${Utils.getUiLoggedIn()}").document(receiver)
+                    .set(hashMapForRecent, SetOptions.merge())
+
+                firestore.collection("Conversation$receiver").document(Utils.getUiLoggedIn())
+                    .set(mapOf(
+                        "message" to messageText,
+                        "time" to Utils.getTime(),
+                        "person" to senderName
+                    ), SetOptions.merge())
+
+                if (task.isSuccessful) {
+                    message.postValue("")
+                }
+            }
+    }
 
 //SEND MESSAGE
-    fun sendMessage(sender: String , receiver : String , friendname: String , friendimage:String)=viewModelScope.launch(Dispatchers.IO) {
+/*@SuppressLint("SuspiciousIndentation")
+fun sendMessage(sender: String, receiver : String, friendname: String, friendimage:String)=viewModelScope.launch(Dispatchers.IO) {
     val context = MyApplication.instance.applicationContext
     val hashMap= hashMapOf<String, Any>(
         "sender" to sender, "receiver" to receiver , "message" to message.value!!, "time" to Utils.getTime()
@@ -97,7 +150,7 @@ fun getCurrentUser() = viewModelScope.launch(Dispatchers.IO) {
 
 
         }
-}
+}*/
  fun getMessages(friendid: String) : LiveData<List<Messages>>{
      return messagesRepo.getMessages(friendid)
  }

@@ -8,9 +8,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mychat.R
-import com.example.mychat.modal.Users
 import de.hdodenhof.circleimageview.CircleImageView
 import com.bumptech.glide.Glide
+import com.example.mychat.modal.Users
 
 class UserAdapter : RecyclerView.Adapter<UserHolder>() {
     // Değiştirilen liste tipini MutableList<Users> olarak tanımlıyoruz
