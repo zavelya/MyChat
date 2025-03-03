@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import android.widget.Toolbar
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -20,6 +21,7 @@ import com.bumptech.glide.Glide
 import com.example.mychat.R
 import com.example.mychat.SignInActivity
 import com.example.mychat.adapter.OnUserClickListener
+import com.example.mychat.adapter.RecentChatAdapter
 import com.example.mychat.adapter.UserAdapter
 import com.example.mychat.databinding.FragmentHomeBinding
 import com.example.mychat.modal.Users
@@ -38,6 +40,7 @@ class HomeFragment : Fragment(), OnUserClickListener {
     lateinit var fbauth: FirebaseAuth
     lateinit var toolbar: androidx.appcompat.widget.Toolbar  // doğru türde Toolbar kullanıyoruz
     lateinit var circleImageView: CircleImageView
+    lateinit var recentchatadapter: RecentChatAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -83,7 +86,14 @@ class HomeFragment : Fragment(), OnUserClickListener {
                 .load(url)
                 .into(circleImageView)
         })
+        recentchatadapter = RecentChatAdapter()
+        userViewModel.getRecentChats().observe(viewLifecycleOwner, Observer{
+            homebinding.rvRecentChats.layoutManager = LinearLayoutManager(activity)
+            recentchatadapter.setOnRecentlist(it)
+            homebinding.rvRecentChats.adapter=recentchatadapter
+        }
     }
+
 
     override fun onUserSelected(position: Int, users: Users) {
         val action = HomeFragmentDirections.actionHomeFragmentToChatFragment(users)
