@@ -32,7 +32,7 @@ data class RecentChats(
         parcel.writeString(friendid)
         parcel.writeString(name)
         parcel.writeString(time)
-        parcel.writeString(friendimage)
+        parcel.writeString(friendsimage)
         parcel.writeString(sender)
         parcel.writeString(message)
         parcel.writeString(person)

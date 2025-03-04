@@ -7,72 +7,36 @@ import com.example.mychat.modal.RecentChats
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
+class ChatListRepo {
 
-class ChatListRepo() {
-
-
-    val firestore = FirebaseFirestore.getInstance()
-
+    private val firestore = FirebaseFirestore.getInstance()
 
     fun getAllChatList(): LiveData<List<RecentChats>> {
-
         val mainChatList = MutableLiveData<List<RecentChats>>()
 
-
         // SHOWING THE RECENT MESSAGED PERSON ON TOP
-        firestore.collection("Conversation${Utils.getUiLoggedIn()}").orderBy("time", Query.Direction.DESCENDING)
+        firestore.collection("Conversation${Utils.getUiLoggedIn()}")
+            .orderBy("time", Query.Direction.DESCENDING)
             .addSnapshotListener { snapshot, exception ->
 
-
                 if (exception != null) {
-
                     return@addSnapshotListener
                 }
 
-
                 val chatlist = mutableListOf<RecentChats>()
 
-                snapshot?.forEach { document ->
+                // 'value?.forEach' yerine 'snapshot?.documents?.forEach' kullanıldı
+                snapshot?.documents?.forEach { document ->
+                    val recentmodal = document.toObject(RecentChats::class.java)
 
-                    val chatlistmodel = document.toObject(RecentChats::class.java)
-
-
-                    if (chatlistmodel.sender.equals(Utils.getUiLoggedIn())) {
-
-
-                        chatlistmodel.let {
-
-
-                            chatlist.add(it)
-
-
-
-
-
-
-
-
-                        }
-
-
+                    if (recentmodal != null && recentmodal.sender == Utils.getUiLoggedIn()) {
+                        chatlist.add(recentmodal)
                     }
-
-
-
-
-
-
-
                 }
 
-
                 mainChatList.value = chatlist
-
-
             }
 
         return mainChatList
-
-
     }
 }

@@ -7,10 +7,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide.init
+import com.example.chatmessenger.mvvm.ChatListRepo
 import com.example.mychat.MyApplication
 import com.example.mychat.SharedPrefs
 import com.example.mychat.Utils
 import com.example.mychat.modal.Messages
+import com.example.mychat.modal.RecentChats
 import com.example.mychat.modal.Users
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -24,6 +26,7 @@ class ChatAppViewModel : ViewModel() {
     val message = MutableLiveData<String>()
     val usersRepo = UsersRepo()
     val messagesRepo = MessageRepo()
+    val recentChatRepo = ChatListRepo()
 
     init{
         getCurrentUser()
@@ -154,5 +157,8 @@ fun sendMessage(sender: String, receiver : String, friendname: String, friendima
  fun getMessages(friendid: String) : LiveData<List<Messages>>{
      return messagesRepo.getMessages(friendid)
  }
+    fun getRecentChats():LiveData<List<RecentChats>>{
+        return recentChatRepo.getAllChatList()
+    }
 }
 

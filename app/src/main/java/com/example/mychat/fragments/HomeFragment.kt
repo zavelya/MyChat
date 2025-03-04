@@ -1,6 +1,5 @@
 package com.example.mychat.fragments
 
-import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,13 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import android.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -23,7 +19,9 @@ import com.example.mychat.SignInActivity
 import com.example.mychat.adapter.OnUserClickListener
 import com.example.mychat.adapter.RecentChatAdapter
 import com.example.mychat.adapter.UserAdapter
+import com.example.mychat.adapter.onRecentChatClicked
 import com.example.mychat.databinding.FragmentHomeBinding
+import com.example.mychat.modal.RecentChats
 import com.example.mychat.modal.Users
 import com.example.mychat.mvvm.ChatAppViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -31,7 +29,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 
 
 @Suppress("DEPRECATION")
-class HomeFragment : Fragment(), OnUserClickListener {
+class HomeFragment : Fragment(), OnUserClickListener, onRecentChatClicked {
 
     lateinit var rvUsers: RecyclerView
     lateinit var userAdapter: UserAdapter
@@ -89,9 +87,10 @@ class HomeFragment : Fragment(), OnUserClickListener {
         recentchatadapter = RecentChatAdapter()
         userViewModel.getRecentChats().observe(viewLifecycleOwner, Observer{
             homebinding.rvRecentChats.layoutManager = LinearLayoutManager(activity)
-            recentchatadapter.setOnRecentlist(it)
+            recentchatadapter.setOnRecentList(it)
             homebinding.rvRecentChats.adapter=recentchatadapter
-        }
+        })
+        recentchatadapter.setOnRecentChatListener(this)
     }
 
 
@@ -100,6 +99,10 @@ class HomeFragment : Fragment(), OnUserClickListener {
         view?.findNavController()?.navigate(action)
         Log.e("HOMEFRAGMENT", "ClickedOn${users.username}")
 
+    }
 
+    override fun getOnRecentChatClicked(position: Int, recentchatlist: RecentChats) {
+        val action = HomeFragmentDirections.actionHomeFragmentToChatFromHomeFragment(recentchatlist)
+        view?.findNavController()?.navigate(action)
     }
 }
