@@ -11,9 +11,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.mychat.fragments.SettingFragment
 import com.example.mychat.R
 import com.example.mychat.SignInActivity
 import com.example.mychat.adapter.OnUserClickListener
@@ -76,7 +78,14 @@ class HomeFragment : Fragment(), OnUserClickListener, onRecentChatClicked {
         homebinding.logOut.setOnClickListener {
             fbauth.signOut()
             startActivity(Intent(requireContext(), SignInActivity::class.java))
+        }
 
+        homebinding.tlImage.setOnClickListener{
+            try {
+                findNavController().navigate(R.id.action_homeFragment_to_settingFragment)
+            } catch(e:Exception){
+                Log.e("NavigationError", "Hata:${e.message}")
+            }
         }
 
         userViewModel.imageUrl.observe(viewLifecycleOwner, { url ->

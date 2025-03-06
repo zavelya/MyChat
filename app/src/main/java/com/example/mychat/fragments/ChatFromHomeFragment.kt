@@ -55,7 +55,7 @@ class ChatFromHomeFragment : Fragment() {
         backbtn = chattoolbar.findViewById(R.id.chatBackBtn)
 
         backbtn.setOnClickListener{
-            view.findNavController().navigate(R.id.action_chatFragment_to_homeFragment)
+            view.findNavController().navigate(R.id.action_chatFromHomeFragment_to_homeFragment)
         }
 
         Glide.with(requireContext()).load(args.recentchats.friendsimage!!).into(circleImageView)
@@ -66,7 +66,7 @@ class ChatFromHomeFragment : Fragment() {
 
 
         chatfromhomebinding.chatBackBtn.setOnClickListener{
-            view.findNavController().navigate(R.id.action_chatFragment_to_homeFragment)
+            view.findNavController().navigate(R.id.action_chatFromHomeFragment_to_homeFragment)
         }
         Glide.with(requireContext()).load(args.recentchats.friendid!!).into(circleImageView)
         chatfromhomebinding.viewModel=chatAppViewModel

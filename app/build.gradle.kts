@@ -89,3 +89,6 @@ dependencies {
 
 
 }}}}
+dependencies {
+    implementation(libs.firebase.storage.ktx)
+}
