@@ -9,9 +9,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.mychat.databinding.ActivitySignInBinding
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.analytics
 
 class SignInActivity : AppCompatActivity() {
     private lateinit var email: String
@@ -19,11 +22,14 @@ class SignInActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var progressDialogSignIn: ProgressDialog
     private lateinit var signinBinding: ActivitySignInBinding
+    private lateinit var firebaseAnalytics : FirebaseAnalytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         signinBinding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in)
+        firebaseAnalytics = Firebase.analytics
         auth = FirebaseAuth.getInstance()
 
         // If user is already signed in, redirect to MainActivity
@@ -41,6 +47,7 @@ class SignInActivity : AppCompatActivity() {
 
         // Login button click listener
         signinBinding.loginButton.setOnClickListener {
+
             email = signinBinding.loginetemail.text.toString()
             password = signinBinding.loginetpassword.text.toString()
 

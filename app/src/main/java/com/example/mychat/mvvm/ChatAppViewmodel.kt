@@ -2,6 +2,7 @@ package com.example.mychat.mvvm
 
 import android.annotation.SuppressLint
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,9 +17,14 @@ import com.example.mychat.modal.RecentChats
 import com.example.mychat.modal.Users
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.onesignal.OneSignal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+
+
 private val firestore= FirebaseFirestore.getInstance()
+private val firestoreupdate = FirebaseFirestore.getInstance()
+
 
 class ChatAppViewModel : ViewModel() {
     val name = MutableLiveData<String> ()
@@ -30,7 +36,10 @@ class ChatAppViewModel : ViewModel() {
 
     init{
         getCurrentUser()
+        getRecentChats()
+
     }
+
 
 
     fun getUsers() : LiveData<List<Users>>{
@@ -159,6 +168,34 @@ fun sendMessage(sender: String, receiver : String, friendname: String, friendima
  }
     fun getRecentChats():LiveData<List<RecentChats>>{
         return recentChatRepo.getAllChatList()
+    }
+
+    fun updateProfile() = viewModelScope.launch(Dispatchers.IO) {
+       val context = MyApplication.instance.applicationContext
+               val hashMapUser = hashMapOf<String,Any>("username" to name.value!!, "imageUrl" to imageUrl.value!!)
+        firestore.collection("Users").document(Utils.getUiLoggedIn()).update(hashMapUser).addOnCompleteListener{
+            task->
+            if (task.isSuccessful){
+                Toast.makeText(context, "UPDATED", Toast.LENGTH_SHORT).show()
+            }
+        }
+        val mySharedPrefs = SharedPrefs(context)
+        val friendid = mySharedPrefs.getValue("friendid")
+        mySharedPrefs.getValue("friendid")
+        val hashMapUpDATE = hashMapOf<String,Any>("friendsimage" to imageUrl.value!!, "name" to name.value!!, "person" to name.value!! )
+
+        if(friendid !=null){
+            firestoreupdate.collection("Conversation${friendid}").document(Utils.getUiLoggedIn()).update(hashMapUpDATE)
+            firestoreupdate.collection("Conversation${Utils.getUiLoggedIn()}").
+            document(friendid!!).update("person" , "you")
+
+        }
+
+
+
+
+
+
     }
 }
 
